@@ -56,6 +56,7 @@
             // 
             // subFileNameTextBox
             // 
+            this.subFileNameTextBox.Enabled = false;
             this.subFileNameTextBox.Location = new System.Drawing.Point(83, 11);
             this.subFileNameTextBox.Name = "subFileNameTextBox";
             this.subFileNameTextBox.Size = new System.Drawing.Size(396, 21);
@@ -156,6 +157,7 @@
             this.doneButton.TabIndex = 11;
             this.doneButton.Text = "插入注释";
             this.doneButton.UseVisualStyleBackColor = true;
+            this.doneButton.Click += new System.EventHandler(this.doneButton_Click);
             // 
             // label5
             // 
