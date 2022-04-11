@@ -42,7 +42,7 @@ namespace SubtitlesCommenter.Modules
                 throw new EmptyFileException();
             }
 
-            string styleFormat = GetStyleFormat(file);
+            string styleFormat = ReadSubtitlesFileUtils.GetStyleFormat(file);
             // 判断字幕文件样式格式
             if (string.IsNullOrEmpty(styleFormat))
             {
@@ -73,7 +73,7 @@ namespace SubtitlesCommenter.Modules
                 string[] formats = formatLine.Split(',');
 
                 // 找到有几个定义好的样式
-                int styleNumber = GlobalUtils.GetStyleNumber(styles, Constants.V4P_STYLE_COUNTER);
+                int styleNumber = ReadSubtitlesFileUtils.GetStyleNumber(styles, Constants.V4P_STYLE_COUNTER);
                 if (styleNumber == 0)
                 {
                     // 没有定义好的样式
@@ -216,21 +216,6 @@ namespace SubtitlesCommenter.Modules
             }
 
             return retObj;
-        }
-        /// <summary>
-        /// 判断字幕文件样式格式，返回找到的STYLE_FORMAT常量，未找到返回null
-        /// </summary>
-        /// <param name="subtitlesFile"></param>
-        /// <returns></returns>
-        private static string GetStyleFormat(string subtitlesFile)
-        {
-            // 在字幕文件中寻找STYLE_FORMAT常量
-            int index = subtitlesFile.IndexOf(Constants.STYLE_FORMAT_V4P);
-            if (index != -1)
-            {
-                return Constants.STYLE_FORMAT_V4P;
-            }
-            return null;
         }
     }
 }

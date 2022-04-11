@@ -20,22 +20,5 @@ namespace SubtitlesCommenter.Utils
             if (RightIndex == -1) return "";
             return String.Substring(StartIndex, RightIndex - StartIndex);
         }
-        /// <summary>
-        /// 返回字幕文件中有几个STYLE_COUNTER
-        /// </summary>
-        /// <param name="s">字幕文件</param>
-        /// <param name="STYLE_COUNTER">计数用常量</param>
-        /// <returns></returns>
-        public static int GetStyleNumber(string s, string STYLE_COUNTER)
-        {
-            int index;
-            int count = 0;
-            while ((index = s.IndexOf(STYLE_COUNTER)) != -1)
-            {
-                s = s.Substring(index + STYLE_COUNTER.Length);
-                count++;
-            }
-            return count;
-        }
     }
 }
