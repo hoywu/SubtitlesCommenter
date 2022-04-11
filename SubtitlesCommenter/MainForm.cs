@@ -12,6 +12,7 @@ namespace SubtitlesCommenter
 {
     public partial class MainForm : Form
     {
+        // 打开字幕文件后存放字幕文件中的所有样式，在FillStyleComboBox方法中赋值
         private SubtitlesStyleBase[] StyleArray;
 
         public MainForm()
@@ -69,9 +70,9 @@ namespace SubtitlesCommenter
                 MessageBox.Show(MainFormConstants.ERROR_MESSAGE_EMPTY_FILE, MainFormConstants.ERROR_MESSAGE_TITLE);
                 return false;
             }
-            catch (UnknownStyleException)
+            catch (UnknownStyleException e)
             {
-                MessageBox.Show(MainFormConstants.ERROR_MESSAGE_UNKNOWN_STYLE, MainFormConstants.ERROR_MESSAGE_TITLE);
+                MessageBox.Show(MainFormConstants.ERROR_MESSAGE_UNKNOWN_STYLE + "\n" + e.Message, MainFormConstants.ERROR_MESSAGE_TITLE);
                 return false;
             }
             catch (Exception e)
@@ -107,6 +108,17 @@ namespace SubtitlesCommenter
                     MessageBox.Show(MainFormConstants.ERROR_MESSAGE_NO_STYLE_SELECTED, MainFormConstants.ERROR_MESSAGE_TITLE);
                     return;
                 }
+
+                try
+                {
+                    WriteSubtitlesFile.SaveToSubtitlesFile(BuildAddContentConfig());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(MainFormConstants.ERROR_MESSAGE_ADD_FAILURE + "\n" + ex.Message, MainFormConstants.ERROR_MESSAGE_TITLE);
+                    return;
+                }
+
             }
             finally
             {
@@ -114,21 +126,31 @@ namespace SubtitlesCommenter
             }
         }
 
-
         /// <summary>
-        /// 显示/隐藏高级选项
+        /// 根据窗口中设置的内容构造AddContentConfig对象
         /// </summary>
-        private void advCheckBox_CheckedChanged(object sender, EventArgs e)
+        private AddContentConfigDTO BuildAddContentConfig()
         {
-            if (advCheckBox.Checked)
+            AddContentConfigDTO retObj = new AddContentConfigDTO();
+
+            try
             {
-                ShowAdvOptions();
+                retObj.Encoding = WriteSubtitlesFileUtils.GetFileEncoding(subFileNameTextBox.Text);
             }
-            else
+            catch (Exception e)
             {
-                HideAdvOptions();
+                throw new IOException("获取文件编码失败" + "\n" + e.Message);
             }
+            retObj.FilePath = subFileNameTextBox.Text;
+            retObj.AddMode = singleLineRadioButton.Checked ? Constants.ADD_MODE_SINGLE_LINE : Constants.ADD_MODE_MULTI_LINE;
+            retObj.AddLocation = commLocTextBox.Text;
+            retObj.ShowTime = showTimeTextBox.Text;
+            retObj.StyleName = StyleArray[styleComboBox.SelectedIndex].Name;
+            retObj.Text = contentTextBox.Text;
+
+            return retObj;
         }
+
 
         #region 修改UI相关方法
         /// <summary>
@@ -167,6 +189,20 @@ namespace SubtitlesCommenter
         private void AddToMainFormTitle(String s)
         {
             Text += " " + s;
+        }
+        /// <summary>
+        /// 显示/隐藏高级选项
+        /// </summary>
+        private void advCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (advCheckBox.Checked)
+            {
+                ShowAdvOptions();
+            }
+            else
+            {
+                HideAdvOptions();
+            }
         }
         /// <summary>
         /// 修改主窗口大小隐藏高级选项

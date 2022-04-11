@@ -47,7 +47,7 @@ namespace SubtitlesCommenter.Modules
             if (string.IsNullOrEmpty(styleFormat))
             {
                 // 不支持的样式
-                throw new UnknownStyleException();
+                throw new UnknownStyleException("无法判断该字幕文件的样式格式或不受支持");
             }
             #endregion
 
@@ -60,14 +60,14 @@ namespace SubtitlesCommenter.Modules
                 if (string.IsNullOrEmpty(styles))
                 {
                     // 取出样式为空
-                    throw new UnknownStyleException();
+                    throw new UnknownStyleException("获取样式块失败或样式块为空");
                 }
 
                 string formatLine = GlobalUtils.GetMiddleString(styles, "Format: ", "\n");
                 if (string.IsNullOrEmpty(formatLine))
                 {
                     // 未找到样式Format
-                    throw new UnknownStyleException();
+                    throw new UnknownStyleException("没有找到样式Format行，文件格式错误");
                 }
                 formatLine = formatLine.Replace(", ", ",");
                 string[] formats = formatLine.Split(',');
@@ -77,7 +77,7 @@ namespace SubtitlesCommenter.Modules
                 if (styleNumber == 0)
                 {
                     // 没有定义好的样式
-                    throw new UnknownStyleException();
+                    throw new UnknownStyleException("未在该字幕文件中发现任何样式，请先在字幕制作软件中添加至少一个样式");
                 }
                 #endregion
 
@@ -115,8 +115,8 @@ namespace SubtitlesCommenter.Modules
             }
             else
             {
-                // 未知样式格式
-                throw new UnknownStyleException();
+                // 不应该执行到此，GetStyleFormat可能返回的所有内容应该在上面处理完
+                throw new UnknownStyleException("程序错误，请联系开发者反馈问题");
             }
         }
         /// <summary>
@@ -129,7 +129,7 @@ namespace SubtitlesCommenter.Modules
         {
             if (formats.Length != style.Length)
             {
-                throw new UnknownStyleException();
+                throw new UnknownStyleException("Format行与Style行无法对应");
             }
 
             SubtitlesStyleV4P retObj = new SubtitlesStyleV4P();
