@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SubtitlesCommenter.Bean
+﻿namespace SubtitlesCommenter.Bean
 {
     internal class AddContentConfigV4PDTO : AddContentConfigBaseDTO
     {

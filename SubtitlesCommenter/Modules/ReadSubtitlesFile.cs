@@ -12,12 +12,6 @@ namespace SubtitlesCommenter.Modules
         /// <summary>
         /// 从字幕文件中取出所有样式，构造样式对象存放到SubtitlesStyleBase数组并返回
         /// </summary>
-        /// <param name="SubtitlesFilePath"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="EmptyFileException"></exception>
-        /// <exception cref="UnknownStyleException"></exception>
         public static SubtitlesStyleBase[] GetSubtitlesStyles(string SubtitlesFilePath, Encoding encoding)
         {
             #region 文件合法性校验
@@ -125,7 +119,6 @@ namespace SubtitlesCommenter.Modules
         /// </summary>
         /// <param name="formats">Format行，定义style数组对应元素的含义</param>
         /// <param name="style">构造对象用数据，元素数量必须与formats相同</param>
-        /// <returns></returns>
         private static SubtitlesStyleV4P BuildV4P(string[] formats, string[] style)
         {
             if (formats.Length != style.Length)

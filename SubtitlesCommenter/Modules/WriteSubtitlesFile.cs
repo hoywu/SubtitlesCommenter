@@ -1,11 +1,11 @@
 ﻿using SubtitlesCommenter.Bean;
+using SubtitlesCommenter.CustomException;
 using SubtitlesCommenter.Utils;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using SubtitlesCommenter.CustomException;
 using System.Text;
-using System;
 
 namespace SubtitlesCommenter.Modules
 {
@@ -31,7 +31,7 @@ namespace SubtitlesCommenter.Modules
         /// <summary>
         /// 将AddContentConfig转换为用于写入文件的文本
         /// </summary>
-        /// <param name="subtitlesFile">ReadAllLines读入的字幕文件List，从中解析Format</param>
+        /// <param name="subtitlesFile">ReadAllLines读入的字幕文件List，将从中解析Format</param>
         /// <param name="baseObj">DTO对象</param>
         private static string GetTextToWrite(List<string> subtitlesFile, AddContentConfigBaseDTO baseObj)
         {

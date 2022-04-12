@@ -107,8 +107,6 @@ namespace SubtitlesCommenter
         /// <summary>
         /// 点击插入按钮
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void doneButton_Click(object sender, EventArgs e)
         {
             doneButton.Enabled = false;

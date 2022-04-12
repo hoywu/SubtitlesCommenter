@@ -1,6 +1,5 @@
-SubtitlesCommenter
-===========================
+# SubtitlesCommenter
 
-ÃæÏòÊÓÆµ×ÖÄ»ÖÆ×÷ÕßµÄ£¬ÎªASS×ÖÄ»ÎÄ¼þÒ»¼üÌí¼Ó×¢ÊÍ¡¢ËµÃ÷¡¢ÎÄ»¯±³¾°Àà×ÖÄ»µÄÐ¡¹¤¾ß
+è¾…åŠ©è§†é¢‘å­—å¹•åˆ¶ä½œè€…ä¸º ASS å­—å¹•å¿«é€Ÿæ·»åŠ æ³¨é‡Šã€è¯´æ˜Žã€æ–‡åŒ–èƒŒæ™¯ç±»å­—å¹•çš„ Windows å°å·¥å…·
 
-¿ª·¢ÖÐ
+å¼€å‘ä¸­
