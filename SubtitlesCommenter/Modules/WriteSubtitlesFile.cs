@@ -1,10 +1,6 @@
 ﻿using SubtitlesCommenter.Bean;
 using SubtitlesCommenter.CustomException;
 using SubtitlesCommenter.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace SubtitlesCommenter.Modules
@@ -58,7 +54,7 @@ namespace SubtitlesCommenter.Modules
                     // 判断用户输入了多少行
                     string[] addLine = (v4PDTO.Text.Replace("\r\n", "\n") + "\n").Split('\n');
 
-                    StringBuilder text = new StringBuilder();
+                    StringBuilder text = new();
                     string startTime = v4PDTO.AddLocation;
                     for (int i = 0; i < addLine.Length; i++)
                     {
@@ -120,13 +116,13 @@ namespace SubtitlesCommenter.Modules
                 else
                 {
                     // 不应执行到此
-                    return null;
+                    throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
                 }
             }
             else
             {
                 // 不应执行到此
-                return null;
+                throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
             }
         }
     }

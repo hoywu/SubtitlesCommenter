@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SubtitlesCommenter.Utils
+﻿namespace SubtitlesCommenter.Utils
 {
     internal class GlobalUtils
     {

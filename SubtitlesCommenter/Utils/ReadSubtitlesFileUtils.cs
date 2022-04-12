@@ -7,7 +7,7 @@ namespace SubtitlesCommenter.Utils
         /// <summary>
         /// 判断字幕文件样式格式，返回找到的STYLE_FORMAT常量，未找到返回null
         /// </summary>
-        public static string GetStyleFormat(string subtitlesFile)
+        public static string? GetStyleFormat(string subtitlesFile)
         {
             // 在字幕文件中寻找STYLE_FORMAT常量
             int index = subtitlesFile.IndexOf(Constants.STYLE_FORMAT_V4P);

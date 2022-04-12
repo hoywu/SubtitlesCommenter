@@ -1,38 +1,34 @@
-ï»¿using SubtitlesCommenter.Bean;
+using SubtitlesCommenter.Bean;
 using SubtitlesCommenter.CustomException;
 using SubtitlesCommenter.Modules;
 using SubtitlesCommenter.Utils;
-using System;
-using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Windows.Forms;
 
 namespace SubtitlesCommenter
 {
     public partial class MainForm : Form
     {
-        // é€‰æ‹©æ–‡ä»¶ååˆ¤æ–­æ–‡ä»¶ç¼–ç å­˜æ”¾åœ¨æ­¤
+        // Ñ¡ÔñÎÄ¼şºóÅĞ¶ÏÎÄ¼ş±àÂë´æ·ÅÔÚ´Ë
         private Encoding SubtitlesFileEncoding;
-        // æ‰“å¼€å­—å¹•æ–‡ä»¶åå­˜æ”¾å­—å¹•æ–‡ä»¶ä¸­çš„æ‰€æœ‰æ ·å¼
+        // ´ò¿ª×ÖÄ»ÎÄ¼şºó´æ·Å×ÖÄ»ÎÄ¼şÖĞµÄËùÓĞÑùÊ½
         private SubtitlesStyleBase[] StyleArray;
 
         public MainForm()
         {
             InitializeComponent();
 
-            String[] fontNameList = { "Sarasa Fixed SC", "å¾®è½¯é›…é»‘", "é»‘ä½“" };
+            String[] fontNameList = { "Sarasa Fixed SC", "Î¢ÈíÑÅºÚ", "ºÚÌå" };
             SetBetterFont(fontNameList);
             AddToMainFormTitle(Constants.VERSION);
             HideAdvOptions();
         }
         /// <summary>
-        /// ç‚¹å‡»é€‰æ‹©å­—å¹•æ–‡ä»¶æŒ‰é’®
+        /// µã»÷Ñ¡Ôñ×ÖÄ»ÎÄ¼ş°´Å¥
         /// </summary>
-        private void openSubFileButton_Click(object sender, EventArgs e)
+        private void OpenSubFileButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new();
             openFileDialog.Title = MainFormConstants.OPEN_FILE_DIALOG_TITLE;
             openFileDialog.Filter = MainFormConstants.OPEN_FILE_DIALOG_FILTER;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -48,7 +44,7 @@ namespace SubtitlesCommenter
                 }
                 if (!FillStyleComboBox(openFileDialog.FileName))
                 {
-                    // é”™è¯¯æç¤ºåœ¨FillStyleComboBoxä¸­å®Œæˆ
+                    // ´íÎóÌáÊ¾ÔÚFillStyleComboBoxÖĞÍê³É
                     return;
                 }
                 subFileNameTextBox.Text = Path.GetFullPath(openFileDialog.FileName);
@@ -56,12 +52,12 @@ namespace SubtitlesCommenter
             }
         }
         /// <summary>
-        /// è¯»å–å­—å¹•æ–‡ä»¶å¡«å……æ ·å¼é€‰æ‹©ä¸‹æ‹‰æ¡†ï¼Œå­˜å…¥this.StyleArrayï¼Œæ•è·åˆ°å¼‚å¸¸åˆ™ä»¥MessageBoxæç¤ºç”¨æˆ·å¹¶è¿”å›false
+        /// ¶ÁÈ¡×ÖÄ»ÎÄ¼şÌî³äÑùÊ½Ñ¡ÔñÏÂÀ­¿ò£¬´æÈëthis.StyleArray£¬²¶»ñµ½Òì³£ÔòÒÔMessageBoxÌáÊ¾ÓÃ»§²¢·µ»Øfalse
         /// </summary>
         private bool FillStyleComboBox(string SubtitlesFilePath)
         {
             SubtitlesStyleBase[] styles;
-            #region å–å‡ºå­—å¹•æ–‡ä»¶ä¸­æ‰€æœ‰æ ·å¼ï¼Œå­˜æ”¾åˆ°stylesæ•°ç»„ï¼Œæ•è·å¼‚å¸¸å¹¶æç¤ºç”¨æˆ·
+            #region È¡³ö×ÖÄ»ÎÄ¼şÖĞËùÓĞÑùÊ½£¬´æ·Åµ½stylesÊı×é£¬²¶»ñÒì³£²¢ÌáÊ¾ÓÃ»§
             try
             {
                 styles = ReadSubtitlesFile.GetSubtitlesStyles(SubtitlesFilePath, this.SubtitlesFileEncoding);
@@ -94,7 +90,7 @@ namespace SubtitlesCommenter
             #endregion
 
             styleComboBox.Items.Clear();
-            // æ•°ç»„é•¿åº¦ä¸ä¼šä¸º0ï¼ŒGetSubtitlesStylesæ–¹æ³•å·²è°ƒç”¨GetStyleNumberæ£€æŸ¥äº†æ ·å¼æ•°é‡
+            // Êı×é³¤¶È²»»áÎª0£¬GetSubtitlesStyles·½·¨ÒÑµ÷ÓÃGetStyleNumber¼ì²éÁËÑùÊ½ÊıÁ¿
             for (int i = 0; i < styles.Length; i++)
             {
                 styleComboBox.Items.Add(styles[i].Name);
@@ -105,9 +101,9 @@ namespace SubtitlesCommenter
 
 
         /// <summary>
-        /// ç‚¹å‡»æ’å…¥æŒ‰é’®
+        /// µã»÷²åÈë°´Å¥
         /// </summary>
-        private void doneButton_Click(object sender, EventArgs e)
+        private void DoneButton_Click(object sender, EventArgs e)
         {
             doneButton.Enabled = false;
             try
@@ -141,13 +137,13 @@ namespace SubtitlesCommenter
         }
 
         /// <summary>
-        /// æ ¹æ®çª—å£ä¸­è®¾ç½®çš„å†…å®¹æ„é€ DTOå¯¹è±¡
+        /// ¸ù¾İ´°¿ÚÖĞÉèÖÃµÄÄÚÈİ¹¹ÔìDTO¶ÔÏó
         /// </summary>
         private AddContentConfigBaseDTO BuildAddContentConfig()
         {
             if (Constants.STYLE_FORMAT_V4P.Equals(StyleArray[0].SubtitlesStyleFormat))
             {
-                AddContentConfigV4PDTO retObj = new AddContentConfigV4PDTO();
+                AddContentConfigV4PDTO retObj = new();
                 retObj.SubtitlesStyleFormat = Constants.STYLE_FORMAT_V4P;
                 retObj.Encoding = this.SubtitlesFileEncoding;
                 retObj.FilePath = subFileNameTextBox.Text;
@@ -160,25 +156,25 @@ namespace SubtitlesCommenter
             }
             else
             {
-                // ä¸åº”æ‰§è¡Œåˆ°æ­¤å¤„
-                return null;
+                // ²»Ó¦Ö´ĞĞµ½´Ë´¦
+                throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
             }
         }
 
 
-        #region ä¿®æ”¹UIç›¸å…³æ–¹æ³•
+        #region ĞŞ¸ÄUIÏà¹Ø·½·¨
         /// <summary>
-        /// å°è¯•ä¸ºUIå…ƒç´ è®¾ç½®æ›´ç¾è§‚çš„å­—ä½“
+        /// ³¢ÊÔÎªUIÔªËØÉèÖÃ¸üÃÀ¹ÛµÄ×ÖÌå
         /// </summary>
-        /// <param name="fontNameList">åŒ…å«å­—ä½“å…¨åçš„Stringæ•°ç»„</param>
+        /// <param name="fontNameList">°üº¬×ÖÌåÈ«ÃûµÄStringÊı×é</param>
         private void SetBetterFont(String[] fontNameList)
         {
-            Font font = MainFormUtils.GetExistingFont(fontNameList);
+            Font? font = MainFormUtils.GetExistingFont(fontNameList);
             if (font == null)
             {
                 return;
             }
-            // åˆ©ç”¨åå°„å°†thisä¸­æ‰€æœ‰ç±»å‹namespaceä¸ºSystem.Windows.Formsçš„å­—æ®µçš„Fontå±æ€§è®¾ç½®ä¸ºfont
+            // ÀûÓÃ·´Éä½«thisÖĞËùÓĞÀàĞÍnamespaceÎªSystem.Windows.FormsµÄ×Ö¶ÎµÄFontÊôĞÔÉèÖÃÎªfont
             Type type = this.GetType();
             FieldInfo[] fieldInfos = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (FieldInfo fieldInfo in fieldInfos)
@@ -198,16 +194,16 @@ namespace SubtitlesCommenter
         }
 
         /// <summary>
-        /// åœ¨ä¸»çª—å£æ ‡é¢˜æœ€åæ·»åŠ æŒ‡å®šæ–‡æœ¬
+        /// ÔÚÖ÷´°¿Ú±êÌâ×îºóÌí¼ÓÖ¸¶¨ÎÄ±¾
         /// </summary>
         private void AddToMainFormTitle(String s)
         {
             Text += " " + s;
         }
         /// <summary>
-        /// æ˜¾ç¤º/éšè—é«˜çº§é€‰é¡¹
+        /// ÏÔÊ¾/Òş²Ø¸ß¼¶Ñ¡Ïî
         /// </summary>
-        private void advCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void AdvCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (advCheckBox.Checked)
             {
@@ -219,14 +215,14 @@ namespace SubtitlesCommenter
             }
         }
         /// <summary>
-        /// ä¿®æ”¹ä¸»çª—å£å¤§å°éšè—é«˜çº§é€‰é¡¹
+        /// ĞŞ¸ÄÖ÷´°¿Ú´óĞ¡Òş²Ø¸ß¼¶Ñ¡Ïî
         /// </summary>
         private void HideAdvOptions()
         {
             ClientSize = new Size(MainFormConstants.MAIN_FORM_WIDTH, MainFormConstants.MAIN_FORM_HEIGHT_HIDE_ADV);
         }
         /// <summary>
-        /// ä¿®æ”¹ä¸»çª—å£å¤§å°æ˜¾ç¤ºé«˜çº§é€‰é¡¹
+        /// ĞŞ¸ÄÖ÷´°¿Ú´óĞ¡ÏÔÊ¾¸ß¼¶Ñ¡Ïî
         /// </summary>
         private void ShowAdvOptions()
         {

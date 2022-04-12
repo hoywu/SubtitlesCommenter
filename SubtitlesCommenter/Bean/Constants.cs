@@ -4,6 +4,7 @@
     {
         public const string VERSION = "v0.1";
         //public static readonly string SettingPath = Environment.CurrentDirectory + "\\Setting.json";
+        public const string ERROR_MESSAGE_PROGRAMING_ERROR = "程序错误，请联系开发者反馈问题";
         public const string STYLE_FORMAT_V4P = "[V4+ Styles]";
         public const string V4P_STYLE_COUNTER = "\nStyle: ";
 
@@ -13,9 +14,9 @@
 
     internal class MainFormConstants
     {
-        public const int MAIN_FORM_WIDTH = 573;
-        public const int MAIN_FORM_HEIGHT_HIDE_ADV = 349;
-        public const int MAIN_FORM_HEIGHT_SHOW_ADV = 458;
+        public const int MAIN_FORM_WIDTH = 665;
+        public const int MAIN_FORM_HEIGHT_HIDE_ADV = 405;
+        public const int MAIN_FORM_HEIGHT_SHOW_ADV = 500;
         public const string OPEN_FILE_DIALOG_TITLE = "选择字幕文件";
         public const string OPEN_FILE_DIALOG_FILTER = "ASS Subtitles File|*.ass";
 

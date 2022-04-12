@@ -1,8 +1,6 @@
 ﻿using SubtitlesCommenter.Bean;
 using SubtitlesCommenter.CustomException;
 using SubtitlesCommenter.Utils;
-using System;
-using System.IO;
 using System.Text;
 
 namespace SubtitlesCommenter.Modules
@@ -37,7 +35,7 @@ namespace SubtitlesCommenter.Modules
                 throw new EmptyFileException();
             }
 
-            string styleFormat = ReadSubtitlesFileUtils.GetStyleFormat(file);
+            string? styleFormat = ReadSubtitlesFileUtils.GetStyleFormat(file);
             // 判断字幕文件样式格式
             if (string.IsNullOrEmpty(styleFormat))
             {
@@ -78,7 +76,7 @@ namespace SubtitlesCommenter.Modules
 
                 SubtitlesStyleV4P[] retArray = new SubtitlesStyleV4P[styleNumber];
 
-                int index = 0;
+                int index;
                 // remain 存放尚未构造成对象的样式块内容
                 string remain = styles + "\n";
                 // style 存放一个样式行
@@ -111,7 +109,7 @@ namespace SubtitlesCommenter.Modules
             else
             {
                 // 不应该执行到此，ReadSubtitlesFileUtils.GetStyleFormat可能返回的所有内容应该在上面处理完
-                throw new UnknownStyleException("程序错误，请联系开发者反馈问题");
+                throw new UnknownStyleException(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
             }
         }
         /// <summary>
@@ -126,7 +124,7 @@ namespace SubtitlesCommenter.Modules
                 throw new UnknownStyleException("Format行与Style行无法对应");
             }
 
-            SubtitlesStyleV4P retObj = new SubtitlesStyleV4P();
+            SubtitlesStyleV4P retObj = new();
             retObj.SubtitlesStyleFormat = Constants.STYLE_FORMAT_V4P;
 
             for (int i = 0; i < formats.Length; i++)
