@@ -1,4 +1,4 @@
-﻿namespace SubtitlesCommenter.CustomException
+﻿namespace SubtitlesCommenter.Exceptions
 {
     internal class UnknownStyleException : Exception
     {

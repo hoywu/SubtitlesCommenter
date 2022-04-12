@@ -1,5 +1,5 @@
 using SubtitlesCommenter.Bean;
-using SubtitlesCommenter.CustomException;
+using SubtitlesCommenter.Exceptions;
 using SubtitlesCommenter.Modules;
 using SubtitlesCommenter.Utils;
 using System.Reflection;
