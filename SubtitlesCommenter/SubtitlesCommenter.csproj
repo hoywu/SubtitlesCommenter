@@ -66,10 +66,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bean\AddContentConfigBaseDTO.cs" />
     <Compile Include="Bean\Constants.cs" />
     <Compile Include="Bean\SubtitlesStyleBase.cs" />
     <Compile Include="Bean\SubtitlesStyleV4P.cs" />
-    <Compile Include="Bean\AddContentConfigDTO.cs" />
+    <Compile Include="Bean\AddContentConfigV4PDTO.cs" />
     <Compile Include="CustomException\EmptyFileException.cs" />
     <Compile Include="CustomException\UnknownStyleException.cs" />
     <Compile Include="MainForm.cs">

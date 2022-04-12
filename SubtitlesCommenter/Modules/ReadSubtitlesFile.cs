@@ -3,6 +3,7 @@ using SubtitlesCommenter.CustomException;
 using SubtitlesCommenter.Utils;
 using System;
 using System.IO;
+using System.Text;
 
 namespace SubtitlesCommenter.Modules
 {
@@ -17,7 +18,7 @@ namespace SubtitlesCommenter.Modules
         /// <exception cref="IOException"></exception>
         /// <exception cref="EmptyFileException"></exception>
         /// <exception cref="UnknownStyleException"></exception>
-        public static SubtitlesStyleBase[] GetSubtitlesStyles(string SubtitlesFilePath)
+        public static SubtitlesStyleBase[] GetSubtitlesStyles(string SubtitlesFilePath, Encoding encoding)
         {
             #region 文件合法性校验
             if (!File.Exists(SubtitlesFilePath))
@@ -28,7 +29,7 @@ namespace SubtitlesCommenter.Modules
             string file;
             try
             {
-                file = File.ReadAllText(SubtitlesFilePath);
+                file = File.ReadAllText(SubtitlesFilePath, encoding);
                 file = file.Replace("\r\n", "\n");
             }
             catch (Exception e)
@@ -115,7 +116,7 @@ namespace SubtitlesCommenter.Modules
             }
             else
             {
-                // 不应该执行到此，GetStyleFormat可能返回的所有内容应该在上面处理完
+                // 不应该执行到此，ReadSubtitlesFileUtils.GetStyleFormat可能返回的所有内容应该在上面处理完
                 throw new UnknownStyleException("程序错误，请联系开发者反馈问题");
             }
         }

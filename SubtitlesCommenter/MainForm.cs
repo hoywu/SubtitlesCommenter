@@ -6,13 +6,16 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SubtitlesCommenter
 {
     public partial class MainForm : Form
     {
-        // 打开字幕文件后存放字幕文件中的所有样式，在FillStyleComboBox方法中赋值
+        // 选择文件后判断文件编码存放在此
+        private Encoding SubtitlesFileEncoding;
+        // 打开字幕文件后存放字幕文件中的所有样式
         private SubtitlesStyleBase[] StyleArray;
 
         public MainForm()
@@ -34,8 +37,18 @@ namespace SubtitlesCommenter
             openFileDialog.Filter = MainFormConstants.OPEN_FILE_DIALOG_FILTER;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                try
+                {
+                    this.SubtitlesFileEncoding = WriteSubtitlesFileUtils.GetFileEncoding(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(MainFormConstants.ERROR_MESSAGE_UNKNOWN_ENCODING + "\n" + ex.Message, MainFormConstants.ERROR_MESSAGE_TITLE);
+                    return;
+                }
                 if (!FillStyleComboBox(openFileDialog.FileName))
                 {
+                    // 错误提示在FillStyleComboBox中完成
                     return;
                 }
                 subFileNameTextBox.Text = Path.GetFullPath(openFileDialog.FileName);
@@ -43,17 +56,15 @@ namespace SubtitlesCommenter
             }
         }
         /// <summary>
-        /// 读取字幕文件填充样式选择下拉框，若捕获到异常则以MessageBox提示用户并返回false
+        /// 读取字幕文件填充样式选择下拉框，存入this.StyleArray，捕获到异常则以MessageBox提示用户并返回false
         /// </summary>
-        /// <param name="SubtitlesFilePath"></param>
-        /// <returns></returns>
         private bool FillStyleComboBox(string SubtitlesFilePath)
         {
             SubtitlesStyleBase[] styles;
             #region 取出字幕文件中所有样式，存放到styles数组，捕获异常并提示用户
             try
             {
-                styles = ReadSubtitlesFile.GetSubtitlesStyles(SubtitlesFilePath);
+                styles = ReadSubtitlesFile.GetSubtitlesStyles(SubtitlesFilePath, this.SubtitlesFileEncoding);
             }
             catch (FileNotFoundException)
             {
@@ -108,6 +119,11 @@ namespace SubtitlesCommenter
                     MessageBox.Show(MainFormConstants.ERROR_MESSAGE_NO_STYLE_SELECTED, MainFormConstants.ERROR_MESSAGE_TITLE);
                     return;
                 }
+                if (string.IsNullOrEmpty(contentTextBox.Text.Replace("\n", "").Replace("\r", "")))
+                {
+                    MessageBox.Show(MainFormConstants.ERROR_MESSAGE_EMPTY_CONTENT, MainFormConstants.ERROR_MESSAGE_TITLE);
+                    return;
+                }
 
                 try
                 {
@@ -118,7 +134,7 @@ namespace SubtitlesCommenter
                     MessageBox.Show(MainFormConstants.ERROR_MESSAGE_ADD_FAILURE + "\n" + ex.Message, MainFormConstants.ERROR_MESSAGE_TITLE);
                     return;
                 }
-
+                MessageBox.Show(MainFormConstants.NOTICE_MESSAGE_SUCCEED, MainFormConstants.NOTICE_MESSAGE_TITLE);
             }
             finally
             {
@@ -127,28 +143,28 @@ namespace SubtitlesCommenter
         }
 
         /// <summary>
-        /// 根据窗口中设置的内容构造AddContentConfig对象
+        /// 根据窗口中设置的内容构造DTO对象
         /// </summary>
-        private AddContentConfigDTO BuildAddContentConfig()
+        private AddContentConfigBaseDTO BuildAddContentConfig()
         {
-            AddContentConfigDTO retObj = new AddContentConfigDTO();
-
-            try
+            if (Constants.STYLE_FORMAT_V4P.Equals(StyleArray[0].SubtitlesStyleFormat))
             {
-                retObj.Encoding = WriteSubtitlesFileUtils.GetFileEncoding(subFileNameTextBox.Text);
+                AddContentConfigV4PDTO retObj = new AddContentConfigV4PDTO();
+                retObj.SubtitlesStyleFormat = Constants.STYLE_FORMAT_V4P;
+                retObj.Encoding = this.SubtitlesFileEncoding;
+                retObj.FilePath = subFileNameTextBox.Text;
+                retObj.AddMode = singleLineRadioButton.Checked ? Constants.ADD_MODE_SINGLE_LINE : Constants.ADD_MODE_MULTI_LINE;
+                retObj.AddLocation = commLocTextBox.Text;
+                retObj.ShowTime = showTimeTextBox.Text;
+                retObj.StyleName = StyleArray[styleComboBox.SelectedIndex].Name;
+                retObj.Text = contentTextBox.Text;
+                return retObj;
             }
-            catch (Exception e)
+            else
             {
-                throw new IOException("获取文件编码失败" + "\n" + e.Message);
+                // 不应执行到此处
+                return null;
             }
-            retObj.FilePath = subFileNameTextBox.Text;
-            retObj.AddMode = singleLineRadioButton.Checked ? Constants.ADD_MODE_SINGLE_LINE : Constants.ADD_MODE_MULTI_LINE;
-            retObj.AddLocation = commLocTextBox.Text;
-            retObj.ShowTime = showTimeTextBox.Text;
-            retObj.StyleName = StyleArray[styleComboBox.SelectedIndex].Name;
-            retObj.Text = contentTextBox.Text;
-
-            return retObj;
         }
 
 

@@ -2,10 +2,10 @@
 
 namespace SubtitlesCommenter.Bean
 {
-    internal class AddContentConfigDTO
+    internal class AddContentConfigV4PDTO : AddContentConfigBaseDTO
     {
-        public Encoding Encoding { get; set; }
-        public string FilePath { get; set; }
+        //public new Encoding Encoding { get; set; }
+        //public new string FilePath { get; set; }
         public int AddMode { get; set; }
         public int Layer { get; set; } = 0;
         public string AddLocation { get; set; }
