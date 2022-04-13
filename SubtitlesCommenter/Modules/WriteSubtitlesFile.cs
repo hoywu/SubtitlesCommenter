@@ -37,88 +37,86 @@ namespace SubtitlesCommenter.Modules
             {
                 AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)baseObj;
 
-                // 单行模式
-                if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
+                string format = subtitlesFile.ElementAt(subtitlesFile.IndexOf("[Events]") + 1);
+                format = format.Replace("\r\n", "\n");
+                format = GlobalUtils.GetMiddleString(format + "\n", "Format: ", "\n");
+                format = format.Replace(", ", ",");
+                if (string.IsNullOrEmpty(format))
                 {
-                    string format = subtitlesFile.ElementAt(subtitlesFile.IndexOf("[Events]") + 1);
-                    format = format.Replace("\r\n", "\n");
-                    format = GlobalUtils.GetMiddleString(format + "\n", "Format: ", "\n");
-                    format = format.Replace(", ", ",");
-                    if (string.IsNullOrEmpty(format))
+                    throw new UnknownStyleException("没有找到字幕Format行，文件格式错误");
+                }
+
+                // 格式数组
+                string[] formats = format.Split(',');
+
+                // 判断用户输入了多少行
+                string[] addLine = (v4PDTO.Text.Replace("\r\n", "\n") + "\n").Split('\n');
+
+                StringBuilder text = new();
+                string startTime = v4PDTO.AddLocation;
+                for (int i = 0; i < addLine.Length; i++)
+                {
+                    if (addLine[i] == "") continue;
+                    text.Append("Dialogue: ");
+                    foreach (string s in formats)
                     {
-                        throw new UnknownStyleException("没有找到字幕Format行，文件格式错误");
-                    }
-
-                    // 格式数组
-                    string[] formats = format.Split(',');
-
-                    // 判断用户输入了多少行
-                    string[] addLine = (v4PDTO.Text.Replace("\r\n", "\n") + "\n").Split('\n');
-
-                    StringBuilder text = new();
-                    string startTime = v4PDTO.AddLocation;
-                    for (int i = 0; i < addLine.Length; i++)
-                    {
-                        if (addLine[i] == "") continue;
-                        text.Append("Dialogue: ");
-                        foreach (string s in formats)
+                        switch (s)
                         {
-                            switch (s)
-                            {
-                                case "Layer":
-                                    text.Append("," + v4PDTO.Layer);
-                                    break;
-                                case "Start":
-                                    text.Append("," + startTime);
-                                    break;
-                                case "End":
-                                    text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
-                                    break;
-                                case "Style":
-                                    text.Append("," + v4PDTO.Style.Name);
-                                    break;
-                                case "Name":
-                                    text.Append("," + v4PDTO.Name);
-                                    break;
-                                case "MarginL":
-                                    text.Append("," + v4PDTO.MarginL);
-                                    break;
-                                case "MarginR":
-                                    text.Append("," + v4PDTO.MarginR);
-                                    break;
-                                case "MarginV":
-                                    text.Append("," + v4PDTO.MarginV);
-                                    break;
-                                case "Effect":
-                                    text.Append("," + v4PDTO.Effect);
-                                    break;
-                                case "Text":
-                                    text.Append("," + addLine[i]);
-                                    break;
-                            }
+                            case "Layer":
+                                text.Append("," + v4PDTO.Layer);
+                                break;
+                            case "Start":
+                                text.Append("," + startTime);
+                                break;
+                            case "End":
+                                text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
+                                break;
+                            case "Style":
+                                text.Append("," + v4PDTO.Style.Name);
+                                break;
+                            case "Name":
+                                text.Append("," + v4PDTO.Name);
+                                break;
+                            case "MarginL":
+                                text.Append("," + v4PDTO.MarginL);
+                                break;
+                            case "MarginR":
+                                text.Append("," + v4PDTO.MarginR);
+                                break;
+                            case "MarginV":
+                                text.Append("," + v4PDTO.MarginV);
+                                break;
+                            case "Effect":
+                                text.Append("," + v4PDTO.Effect);
+                                break;
+                            case "Text":
+                                text.Append("," + addLine[i]);
+                                break;
                         }
-                        text.Append(Environment.NewLine);
+                    }
+                    text.Append(Environment.NewLine);
+                    if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
+                    {
+                        // 单行模式
                         startTime = GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime);
                     }
+                    else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
+                    {
+                        // 整段模式
+                    }
+                    else
+                    {
+                        // 不应执行到此
+                        throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
+                    }
+                }
 
-                    string retText = text.ToString();
-                    retText = retText.Replace("Dialogue: ,", "Dialogue: ");
-                    // 删除最后一个换行符
-                    retText = retText.Remove(retText.Length - Environment.NewLine.Length);
+                string retText = text.ToString();
+                retText = retText.Replace("Dialogue: ,", "Dialogue: ");
+                // 删除最后一个换行符
+                retText = retText.Remove(retText.Length - Environment.NewLine.Length);
 
-                    return retText;
-                }
-                // 整段模式
-                else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
-                {
-                    // todo
-                    return null;
-                }
-                else
-                {
-                    // 不应执行到此
-                    throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
-                }
+                return retText;
             }
             else
             {
