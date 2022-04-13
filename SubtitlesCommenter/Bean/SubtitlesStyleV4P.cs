@@ -25,5 +25,10 @@
         public int MarginR { get; set; }
         public int MarginV { get; set; }
         public int Encoding { get; set; }
+
+        public SubtitlesStyleV4P()
+        {
+            SubtitlesStyleStandard = Enum.StyleStandardEnum.V4P;
+        }
     }
 }

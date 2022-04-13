@@ -4,16 +4,21 @@
     {
         //public new Encoding Encoding { get; set; }
         //public new string FilePath { get; set; }
-        public int AddMode { get; set; }
+        //public new Enum.AddModeEnum AddMode { get; set; }
         public int Layer { get; set; } = 0;
-        public string AddLocation { get; set; }
-        public string ShowTime { get; set; }
-        public string StyleName { get; set; }
+        //public new string AddLocation { get; set; }
+        //public new string ShowTime { get; set; }
+        //public new string StyleName { get; set; }
         public string Name { get; set; } = "";
         public int MarginL { get; set; } = 0;
         public int MarginR { get; set; } = 0;
         public int MarginV { get; set; } = 0;
         public string Effect { get; set; } = "";
-        public string Text { get; set; }
+        //public new string Text { get; set; }
+
+        public AddContentConfigV4PDTO()
+        {
+            SubtitlesStyleStandard = Enum.StyleStandardEnum.V4P;
+        }
     }
 }

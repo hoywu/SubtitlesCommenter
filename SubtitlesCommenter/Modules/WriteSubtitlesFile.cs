@@ -1,4 +1,5 @@
 ﻿using SubtitlesCommenter.Bean;
+using SubtitlesCommenter.Enum;
 using SubtitlesCommenter.Exceptions;
 using SubtitlesCommenter.Utils;
 using System.Text;
@@ -15,7 +16,7 @@ namespace SubtitlesCommenter.Modules
             List<string> fileLines = File.ReadAllLines(add.FilePath, add.Encoding).ToList();
 
             // [V4+ Styles]
-            if (Constants.STYLE_FORMAT_V4P.Equals(add.SubtitlesStyleFormat))
+            if (add.SubtitlesStyleStandard == StyleStandardEnum.V4P)
             {
                 AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)add;
                 string writeText = GetTextToWrite(fileLines, v4PDTO);
@@ -32,12 +33,12 @@ namespace SubtitlesCommenter.Modules
         private static string GetTextToWrite(List<string> subtitlesFile, AddContentConfigBaseDTO baseObj)
         {
             // [V4+ Styles]
-            if (Constants.STYLE_FORMAT_V4P.Equals(baseObj.SubtitlesStyleFormat))
+            if (baseObj.SubtitlesStyleStandard == StyleStandardEnum.V4P)
             {
                 AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)baseObj;
 
                 // 单行模式
-                if (Constants.ADD_MODE_SINGLE_LINE.Equals(v4PDTO.AddMode))
+                if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
                 {
                     string format = subtitlesFile.ElementAt(subtitlesFile.IndexOf("[Events]") + 1);
                     format = format.Replace("\r\n", "\n");
@@ -74,7 +75,7 @@ namespace SubtitlesCommenter.Modules
                                     text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
                                     break;
                                 case "Style":
-                                    text.Append("," + v4PDTO.StyleName);
+                                    text.Append("," + v4PDTO.Style.Name);
                                     break;
                                 case "Name":
                                     text.Append("," + v4PDTO.Name);
@@ -108,7 +109,7 @@ namespace SubtitlesCommenter.Modules
                     return retText;
                 }
                 // 整段模式
-                else if (Constants.ADD_MODE_MULTI_LINE.Equals(v4PDTO.AddMode))
+                else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
                 {
                     // todo
                     return null;

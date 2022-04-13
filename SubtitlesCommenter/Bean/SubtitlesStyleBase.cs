@@ -1,8 +1,10 @@
-﻿namespace SubtitlesCommenter.Bean
+﻿using SubtitlesCommenter.Enum;
+
+namespace SubtitlesCommenter.Bean
 {
     internal class SubtitlesStyleBase
     {
-        public string SubtitlesStyleFormat { get; set; }
+        public StyleStandardEnum SubtitlesStyleStandard { get; set; }
         public string Name { get; set; }
     }
 }

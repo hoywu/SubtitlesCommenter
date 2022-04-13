@@ -1,7 +1,7 @@
 ﻿using SubtitlesCommenter.Bean;
+using SubtitlesCommenter.Enum;
 using SubtitlesCommenter.Exceptions;
 using SubtitlesCommenter.Utils;
-using System.Text;
 
 namespace SubtitlesCommenter.Modules
 {
@@ -10,63 +10,30 @@ namespace SubtitlesCommenter.Modules
         /// <summary>
         /// 从字幕文件中取出所有样式，构造样式对象存放到SubtitlesStyleBase数组并返回
         /// </summary>
-        public static SubtitlesStyleBase[] GetSubtitlesStyles(string SubtitlesFilePath, Encoding encoding)
+        public static SubtitlesStyleBase[] GetSubtitlesStyles(string subtitlesFile, StyleStandardEnum styleStandard)
         {
-            #region 文件合法性校验
-            if (!File.Exists(SubtitlesFilePath))
-            {
-                // 文件不存在
-                throw new FileNotFoundException();
-            }
-            string file;
-            try
-            {
-                file = File.ReadAllText(SubtitlesFilePath, encoding);
-                file = file.Replace("\r\n", "\n");
-            }
-            catch (Exception e)
-            {
-                // 读取失败
-                throw new IOException(e.Message);
-            }
-            if (string.IsNullOrEmpty(file))
-            {
-                // 文件为空
-                throw new EmptyFileException();
-            }
-
-            string? styleFormat = ReadSubtitlesFileUtils.GetStyleFormat(file);
-            // 判断字幕文件样式格式
-            if (string.IsNullOrEmpty(styleFormat))
-            {
-                // 不支持的样式
-                throw new UnknownStyleException("无法判断该字幕文件的样式格式或不受支持");
-            }
-            #endregion
-
             // [V4+ Styles]
-            if (Constants.STYLE_FORMAT_V4P.Equals(styleFormat))
+            if (styleStandard == StyleStandardEnum.V4P)
             {
-                #region 取出样式块内容styles，取出Format行切割存放在formats数组，得到样式数量styleNumber
+                #region 取出样式块内容styles，取出Format行切割存放在formatArray，得到样式数量styleNumber
                 // 取出样式块的内容
-                string styles = GlobalUtils.GetMiddleString(file, Constants.STYLE_FORMAT_V4P, "\n\n");
+                string styles = GlobalUtils.GetMiddleString(subtitlesFile, ReadFileConstants.STYLE_STANDARD_V4P, "\n\n");
                 if (string.IsNullOrEmpty(styles))
                 {
                     // 取出样式为空
-                    throw new UnknownStyleException("获取样式块失败或样式块为空");
+                    throw new UnknownStyleException("读取样式块失败或样式块为空");
                 }
 
+                // 取出样式Format行
                 string formatLine = GlobalUtils.GetMiddleString(styles, "Format: ", "\n");
                 if (string.IsNullOrEmpty(formatLine))
                 {
-                    // 未找到样式Format
-                    throw new UnknownStyleException("没有找到样式Format行，文件格式错误");
+                    throw new UnknownStyleException("没有找到样式Format行或格式错误");
                 }
-                formatLine = formatLine.Replace(", ", ",");
-                string[] formats = formatLine.Split(',');
+                string[] formatArray = formatLine.Replace(", ", ",").Split(',');
 
                 // 找到有几个定义好的样式
-                int styleNumber = ReadSubtitlesFileUtils.GetStyleNumber(styles, Constants.V4P_STYLE_COUNTER);
+                int styleNumber = GetStyleNumber(styles, ReadFileConstants.STYLE_STANDARD_V4P_COUNTER);
                 if (styleNumber == 0)
                 {
                     // 没有定义好的样式
@@ -76,28 +43,27 @@ namespace SubtitlesCommenter.Modules
 
                 SubtitlesStyleV4P[] retArray = new SubtitlesStyleV4P[styleNumber];
 
-                int index;
                 // remain 存放尚未构造成对象的样式块内容
                 string remain = styles + "\n";
+                int index;
                 // style 存放一个样式行
                 string style;
                 // 构造对象并存入数组
                 for (int i = 0; i < retArray.Length; i++)
                 {
                     // 取出一行Style
-                    style = GlobalUtils.GetMiddleString(remain, Constants.V4P_STYLE_COUNTER, "\n");
+                    style = GlobalUtils.GetMiddleString(remain, ReadFileConstants.STYLE_STANDARD_V4P_COUNTER, "\n");
                     // 从 remain 中去掉这一行
-                    index = remain.IndexOf(Constants.V4P_STYLE_COUNTER) + Constants.V4P_STYLE_COUNTER.Length;
+                    index = remain.IndexOf(ReadFileConstants.STYLE_STANDARD_V4P_COUNTER) + ReadFileConstants.STYLE_STANDARD_V4P_COUNTER.Length;
                     remain = remain.Substring(index);
 
                     // 切割取到的Style行，存放到styleArray数组
-                    style = style.Replace(", ", ",");
-                    string[] styleArray = style.Split(',');
+                    string[] styleArray = style.Replace(", ", ",").Split(',');
 
                     // 构造SubtitlesStyleV4P对象，存放到数组中
                     try
                     {
-                        retArray[i] = BuildV4P(formats, styleArray);
+                        retArray[i] = BuildV4P(formatArray, styleArray);
                     }
                     catch (Exception e)
                     {
@@ -108,9 +74,38 @@ namespace SubtitlesCommenter.Modules
             }
             else
             {
-                // 不应该执行到此，ReadSubtitlesFileUtils.GetStyleFormat可能返回的所有内容应该在上面处理完
+                // 不应该执行到此，StyleStandardEnum 所有可能的值应该在上面处理完
                 throw new UnknownStyleException(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
             }
+        }
+        /// <summary>
+        /// 判断字幕文件string样式标准，以便确定解析方式，返回 StyleFormatEnum 枚举型，无法判断返回 StyleStandardEnum.Unknown
+        /// </summary>
+        public static StyleStandardEnum GetStyleStandard(string subtitlesFile)
+        {
+            // 在字幕文件中寻找STYLE_STANDARD_?常量
+            int index = subtitlesFile.IndexOf(ReadFileConstants.STYLE_STANDARD_V4P);
+            if (index != -1)
+            {
+                return StyleStandardEnum.V4P;
+            }
+            return StyleStandardEnum.Unknown;
+        }
+        /// <summary>
+        /// 返回字幕文件string中有几个STYLE_COUNTER
+        /// </summary>
+        /// <param name="s">字幕文件</param>
+        /// <param name="STYLE_COUNTER">计数用常量</param>
+        private static int GetStyleNumber(string s, string STYLE_COUNTER)
+        {
+            int index;
+            int count = 0;
+            while ((index = s.IndexOf(STYLE_COUNTER)) != -1)
+            {
+                s = s.Substring(index + STYLE_COUNTER.Length);
+                count++;
+            }
+            return count;
         }
         /// <summary>
         /// 构造一个SubtitlesStyleV4P对象
@@ -125,7 +120,6 @@ namespace SubtitlesCommenter.Modules
             }
 
             SubtitlesStyleV4P retObj = new();
-            retObj.SubtitlesStyleFormat = Constants.STYLE_FORMAT_V4P;
 
             for (int i = 0; i < formats.Length; i++)
             {
