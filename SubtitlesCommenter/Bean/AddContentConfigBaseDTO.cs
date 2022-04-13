@@ -19,5 +19,11 @@ namespace SubtitlesCommenter.Bean
 
         //渐出渐入毫秒数
         public int fad { get; set; } = 0;
+
+        //透明度
+        public int alpha { get; set; } = 0;
+
+        //自定义特效标签
+        public string custom { get; set; }
     }
 }

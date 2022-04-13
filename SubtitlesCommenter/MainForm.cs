@@ -99,6 +99,8 @@ namespace SubtitlesCommenter
                 {
                     retObj.AdvOption = true;
                     retObj.fad = fadCheckBox.Checked ? int.Parse(fadMsTextBox.Text) : 0;
+                    retObj.alpha = alphaCheckBox.Checked ? int.Parse(alphaTextBox.Text) : 0;
+                    retObj.custom = customCheckBox.Checked ? customTextBox.Text : string.Empty;
                 }
                 else
                 {
@@ -202,6 +204,36 @@ namespace SubtitlesCommenter
             else
             {
                 fadMsTextBox.Enabled = false;
+            }
+        }
+        private void AlphaCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (alphaCheckBox.Checked)
+            {
+                if ("0~255".Equals(alphaTextBox.Text))
+                {
+                    alphaTextBox.Clear();
+                }
+                alphaTextBox.Enabled = true;
+            }
+            else
+            {
+                if ("".Equals(alphaTextBox.Text))
+                {
+                    alphaTextBox.Text = "0~255";
+                }
+                alphaTextBox.Enabled = false;
+            }
+        }
+        private void CustomCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (customCheckBox.Checked)
+            {
+                customTextBox.Enabled = true;
+            }
+            else
+            {
+                customTextBox.Enabled = false;
             }
         }
         #endregion

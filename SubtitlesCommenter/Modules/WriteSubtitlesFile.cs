@@ -53,10 +53,58 @@ namespace SubtitlesCommenter.Modules
                 string[] addLine = (v4PDTO.Text.Replace("\r\n", "\n") + "\n").Split('\n');
 
                 StringBuilder text = new();
-                string startTime = v4PDTO.AddLocation;
-                for (int i = 0; i < addLine.Length; i++)
+
+                if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
                 {
-                    if (addLine[i] == "") continue;
+                    // 单行模式
+                    string startTime = v4PDTO.AddLocation;
+                    for (int i = 0; i < addLine.Length; i++)
+                    {
+                        if ("".Equals(addLine[i])) continue;
+                        text.Append("Dialogue: ");
+                        foreach (string s in formats)
+                        {
+                            switch (s)
+                            {
+                                case "Layer":
+                                    text.Append("," + v4PDTO.Layer);
+                                    break;
+                                case "Start":
+                                    text.Append("," + startTime);
+                                    break;
+                                case "End":
+                                    text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
+                                    break;
+                                case "Style":
+                                    text.Append("," + v4PDTO.Style.Name);
+                                    break;
+                                case "Name":
+                                    text.Append("," + v4PDTO.Name);
+                                    break;
+                                case "MarginL":
+                                    text.Append("," + v4PDTO.MarginL);
+                                    break;
+                                case "MarginR":
+                                    text.Append("," + v4PDTO.MarginR);
+                                    break;
+                                case "MarginV":
+                                    text.Append("," + v4PDTO.MarginV);
+                                    break;
+                                case "Effect":
+                                    text.Append("," + v4PDTO.Effect);
+                                    break;
+                                case "Text":
+                                    text.Append("," + AddASSTagsToText(addLine[i], v4PDTO));
+                                    break;
+                            }
+                        }
+                        text.Append(Environment.NewLine);
+                        startTime = GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime);
+                    }
+                }
+                else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
+                {
+                    // 整段模式
                     text.Append("Dialogue: ");
                     foreach (string s in formats)
                     {
@@ -66,10 +114,10 @@ namespace SubtitlesCommenter.Modules
                                 text.Append("," + v4PDTO.Layer);
                                 break;
                             case "Start":
-                                text.Append("," + startTime);
+                                text.Append("," + v4PDTO.AddLocation);
                                 break;
                             case "End":
-                                text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
+                                text.Append("," + GlobalUtils.GetEndTime(v4PDTO.AddLocation, v4PDTO.ShowTime));
                                 break;
                             case "Style":
                                 text.Append("," + v4PDTO.Style.Name);
@@ -90,29 +138,18 @@ namespace SubtitlesCommenter.Modules
                                 text.Append("," + v4PDTO.Effect);
                                 break;
                             case "Text":
-                                text.Append("," + AddASSTagsToText(addLine[i], v4PDTO));
+                                text.Append("," + AddASSTagsToText(GetMultiLineText(addLine), v4PDTO));
                                 break;
                         }
                     }
-                    text.Append(Environment.NewLine);
-                    if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
-                    {
-                        // 单行模式
-                        startTime = GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime);
-                    }
-                    else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
-                    {
-                        // 整段模式
-                    }
-                    else
-                    {
-                        // 不应执行到此
-                        throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
-                    }
+                }
+                else
+                {
+                    // 不应执行到此
+                    throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
                 }
 
-                string retText = text.ToString();
-                retText = retText.Replace("Dialogue: ,", "Dialogue: ");
+                string retText = text.ToString().Replace("Dialogue: ,", "Dialogue: ");
                 // 删除最后一个换行符
                 retText = retText.Remove(retText.Length - Environment.NewLine.Length);
 
@@ -123,6 +160,23 @@ namespace SubtitlesCommenter.Modules
                 // 不应执行到此
                 throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
             }
+        }
+
+        /// <summary>
+        /// 获得整段模式Text
+        /// </summary>
+        private static string GetMultiLineText(string[] addLine)
+        {
+            StringBuilder text = new();
+            for (int i = 0; i < addLine.Length; i++)
+            {
+                if ("".Equals(addLine[i])) continue;
+                text.Append(addLine[i]);
+                text.Append("\\N");
+            }
+            string retString = text.ToString();
+            retString = retString.Remove(retString.Length - "\\N".Length);
+            return retString + Environment.NewLine;
         }
 
         /// <summary>
@@ -144,6 +198,14 @@ namespace SubtitlesCommenter.Modules
                 if (v4PDTO.fad > 0)
                 {
                     text.Append("\\fad(" + v4PDTO.fad.ToString() + "," + v4PDTO.fad.ToString() + ")");
+                }
+                if (v4PDTO.alpha > 0)
+                {
+                    text.Append("\\alpha&H" + Convert.ToString(v4PDTO.alpha, 16) + "&");
+                }
+                if (!string.IsNullOrEmpty(v4PDTO.custom))
+                {
+                    text.Append(v4PDTO.custom);
                 }
 
                 text.Append("}");
