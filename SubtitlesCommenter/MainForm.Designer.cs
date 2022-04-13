@@ -44,6 +44,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.advCheckBox = new System.Windows.Forms.CheckBox();
+            this.advGroupBox = new System.Windows.Forms.GroupBox();
+            this.fadMsLabe = new System.Windows.Forms.Label();
+            this.fadMsTextBox = new System.Windows.Forms.TextBox();
+            this.fadCheckBox = new System.Windows.Forms.CheckBox();
+            this.advGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -204,11 +209,54 @@
             this.advCheckBox.UseVisualStyleBackColor = true;
             this.advCheckBox.CheckedChanged += new System.EventHandler(this.AdvCheckBox_CheckedChanged);
             // 
+            // advGroupBox
+            // 
+            this.advGroupBox.Controls.Add(this.fadMsLabe);
+            this.advGroupBox.Controls.Add(this.fadMsTextBox);
+            this.advGroupBox.Controls.Add(this.fadCheckBox);
+            this.advGroupBox.Location = new System.Drawing.Point(16, 405);
+            this.advGroupBox.Name = "advGroupBox";
+            this.advGroupBox.Size = new System.Drawing.Size(636, 83);
+            this.advGroupBox.TabIndex = 16;
+            this.advGroupBox.TabStop = false;
+            this.advGroupBox.Text = "高级";
+            // 
+            // fadMsLabe
+            // 
+            this.fadMsLabe.AutoSize = true;
+            this.fadMsLabe.Location = new System.Drawing.Point(125, 24);
+            this.fadMsLabe.Name = "fadMsLabe";
+            this.fadMsLabe.Size = new System.Drawing.Size(25, 17);
+            this.fadMsLabe.TabIndex = 18;
+            this.fadMsLabe.Text = "ms";
+            // 
+            // fadMsTextBox
+            // 
+            this.fadMsTextBox.Enabled = false;
+            this.fadMsTextBox.Location = new System.Drawing.Point(82, 21);
+            this.fadMsTextBox.Name = "fadMsTextBox";
+            this.fadMsTextBox.Size = new System.Drawing.Size(42, 23);
+            this.fadMsTextBox.TabIndex = 17;
+            this.fadMsTextBox.Text = "200";
+            // 
+            // fadCheckBox
+            // 
+            this.fadCheckBox.AutoSize = true;
+            this.fadCheckBox.Location = new System.Drawing.Point(9, 23);
+            this.fadCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.fadCheckBox.Name = "fadCheckBox";
+            this.fadCheckBox.Size = new System.Drawing.Size(75, 21);
+            this.fadCheckBox.TabIndex = 16;
+            this.fadCheckBox.Text = "渐出渐入";
+            this.fadCheckBox.UseVisualStyleBackColor = true;
+            this.fadCheckBox.CheckedChanged += new System.EventHandler(this.FadCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 500);
+            this.Controls.Add(this.advGroupBox);
             this.Controls.Add(this.advCheckBox);
             this.Controls.Add(this.styleComboBox);
             this.Controls.Add(this.label5);
@@ -230,6 +278,8 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "注释字幕添加器";
+            this.advGroupBox.ResumeLayout(false);
+            this.advGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,5 +302,9 @@
         private Label label5;
         private ComboBox styleComboBox;
         private CheckBox advCheckBox;
+        private GroupBox advGroupBox;
+        private CheckBox fadCheckBox;
+        private Label fadMsLabe;
+        private TextBox fadMsTextBox;
     }
 }

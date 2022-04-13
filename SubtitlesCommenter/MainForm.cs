@@ -42,17 +42,6 @@ namespace SubtitlesCommenter
                 styleComboBox.SelectedIndex = 0;
             }
         }
-        /// <summary>
-        /// 填充样式选择下拉框
-        /// </summary>
-        private void FillStyleComboBox(SubtitlesStyleBase[] styles)
-        {
-            styleComboBox.Items.Clear();
-            for (int i = 0; i < styles.Length; i++)
-            {
-                styleComboBox.Items.Add(styles[i].Name);
-            }
-        }
 
 
         /// <summary>
@@ -104,6 +93,18 @@ namespace SubtitlesCommenter
                 retObj.ShowTime = showTimeTextBox.Text;
                 retObj.Style = task.StyleArray[styleComboBox.SelectedIndex];
                 retObj.Text = contentTextBox.Text;
+
+                // 高级选项
+                if (advCheckBox.Checked)
+                {
+                    retObj.AdvOption = true;
+                    retObj.fad = fadCheckBox.Checked ? int.Parse(fadMsTextBox.Text) : 0;
+                }
+                else
+                {
+                    retObj.AdvOption = false;
+                }
+
                 return retObj;
             }
             else
@@ -180,6 +181,30 @@ namespace SubtitlesCommenter
         {
             ClientSize = new Size(MainFormConstants.MAIN_FORM_WIDTH, MainFormConstants.MAIN_FORM_HEIGHT_SHOW_ADV);
         }
+        /// <summary>
+        /// 填充样式选择下拉框
+        /// </summary>
+        private void FillStyleComboBox(SubtitlesStyleBase[] styles)
+        {
+            styleComboBox.Items.Clear();
+            for (int i = 0; i < styles.Length; i++)
+            {
+                styleComboBox.Items.Add(styles[i].Name);
+            }
+        }
+
+        private void FadCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fadCheckBox.Checked)
+            {
+                fadMsTextBox.Enabled = true;
+            }
+            else
+            {
+                fadMsTextBox.Enabled = false;
+            }
+        }
         #endregion
+
     }
 }

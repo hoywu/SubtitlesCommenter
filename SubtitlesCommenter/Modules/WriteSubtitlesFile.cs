@@ -90,7 +90,7 @@ namespace SubtitlesCommenter.Modules
                                 text.Append("," + v4PDTO.Effect);
                                 break;
                             case "Text":
-                                text.Append("," + addLine[i]);
+                                text.Append("," + AddASSTagsToText(addLine[i], v4PDTO));
                                 break;
                         }
                     }
@@ -117,6 +117,38 @@ namespace SubtitlesCommenter.Modules
                 retText = retText.Remove(retText.Length - Environment.NewLine.Length);
 
                 return retText;
+            }
+            else
+            {
+                // 不应执行到此
+                throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
+            }
+        }
+
+        /// <summary>
+        /// 将特效标签加入Text中，如果没有特效标签返回原Text
+        /// </summary>
+        private static string AddASSTagsToText(string Text, AddContentConfigBaseDTO baseObj)
+        {
+            // [V4+ Styles]
+            if (baseObj.SubtitlesStyleStandard == StyleStandardEnum.V4P)
+            {
+                AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)baseObj;
+                if (v4PDTO.AdvOption == false)
+                {
+                    return Text;
+                }
+
+                StringBuilder text = new("{");
+
+                if (v4PDTO.fad > 0)
+                {
+                    text.Append("\\fad(" + v4PDTO.fad.ToString() + "," + v4PDTO.fad.ToString() + ")");
+                }
+
+                text.Append("}");
+                string newText = text.ToString();
+                return "{}".Equals(newText) ? Text : newText + Text;
             }
             else
             {
