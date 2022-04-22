@@ -203,6 +203,10 @@ namespace SubtitlesCommenter.Modules
                 {
                     text.Append("\\alpha&H" + Convert.ToString(v4PDTO.alpha, 16) + "&");
                 }
+                if (v4PDTO.italics == 1)
+                {
+                    text.Append("\\i1");
+                }
                 if (!string.IsNullOrEmpty(v4PDTO.custom))
                 {
                     text.Append(v4PDTO.custom);

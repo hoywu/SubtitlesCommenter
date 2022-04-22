@@ -23,6 +23,9 @@ namespace SubtitlesCommenter.Bean
         //透明度
         public int alpha { get; set; } = 0;
 
+        //斜体
+        public int italics { get; set; } = 0;
+
         //自定义特效标签
         public string custom { get; set; }
     }

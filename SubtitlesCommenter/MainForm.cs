@@ -100,6 +100,7 @@ namespace SubtitlesCommenter
                     retObj.AdvOption = true;
                     retObj.fad = fadCheckBox.Checked ? int.Parse(fadMsTextBox.Text) : 0;
                     retObj.alpha = alphaCheckBox.Checked ? int.Parse(alphaTextBox.Text) : 0;
+                    retObj.italics = italicsCheckBox.Checked ? 1 : 0;
                     retObj.custom = customCheckBox.Checked ? customTextBox.Text : string.Empty;
                 }
                 else
@@ -174,14 +175,14 @@ namespace SubtitlesCommenter
         /// </summary>
         private void HideAdvOptions()
         {
-            ClientSize = new Size(MainFormConstants.MAIN_FORM_WIDTH, MainFormConstants.MAIN_FORM_HEIGHT_HIDE_ADV);
+            ClientSize = new Size(ClientSize.Width, ClientSize.Height - (int)(advGroupBox.Size.Height * 1.16));
         }
         /// <summary>
         /// 修改主窗口大小显示高级选项
         /// </summary>
         private void ShowAdvOptions()
         {
-            ClientSize = new Size(MainFormConstants.MAIN_FORM_WIDTH, MainFormConstants.MAIN_FORM_HEIGHT_SHOW_ADV);
+            ClientSize = new Size(ClientSize.Width, ClientSize.Height + (int)(advGroupBox.Size.Height * 1.16));
         }
         /// <summary>
         /// 填充样式选择下拉框

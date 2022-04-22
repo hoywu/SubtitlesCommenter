@@ -9,9 +9,6 @@
 
     internal class MainFormConstants
     {
-        public const int MAIN_FORM_WIDTH = 665;
-        public const int MAIN_FORM_HEIGHT_HIDE_ADV = 405;
-        public const int MAIN_FORM_HEIGHT_SHOW_ADV = 500;
         public const string OPEN_FILE_DIALOG_TITLE = "选择字幕文件";
         public const string OPEN_FILE_DIALOG_FILTER = "ASS Subtitles File|*.ass";
 
