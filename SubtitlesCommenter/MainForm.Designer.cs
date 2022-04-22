@@ -45,6 +45,7 @@
             this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.advCheckBox = new System.Windows.Forms.CheckBox();
             this.advGroupBox = new System.Windows.Forms.GroupBox();
+            this.boldfaceCheckBox = new System.Windows.Forms.CheckBox();
             this.italicsCheckBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.customTextBox = new System.Windows.Forms.TextBox();
@@ -55,7 +56,8 @@
             this.fadMsLabe = new System.Windows.Forms.Label();
             this.fadMsTextBox = new System.Windows.Forms.TextBox();
             this.fadCheckBox = new System.Windows.Forms.CheckBox();
-            this.boldfaceCheckBox = new System.Windows.Forms.CheckBox();
+            this.underlinedCheckBox = new System.Windows.Forms.CheckBox();
+            this.strikeoutCheckBox = new System.Windows.Forms.CheckBox();
             this.advGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -219,6 +221,8 @@
             // 
             // advGroupBox
             // 
+            this.advGroupBox.Controls.Add(this.strikeoutCheckBox);
+            this.advGroupBox.Controls.Add(this.underlinedCheckBox);
             this.advGroupBox.Controls.Add(this.boldfaceCheckBox);
             this.advGroupBox.Controls.Add(this.italicsCheckBox);
             this.advGroupBox.Controls.Add(this.label7);
@@ -238,6 +242,16 @@
             this.advGroupBox.TabIndex = 16;
             this.advGroupBox.TabStop = false;
             this.advGroupBox.Text = "高级";
+            // 
+            // boldfaceCheckBox
+            // 
+            this.boldfaceCheckBox.AutoSize = true;
+            this.boldfaceCheckBox.Location = new System.Drawing.Point(331, 32);
+            this.boldfaceCheckBox.Name = "boldfaceCheckBox";
+            this.boldfaceCheckBox.Size = new System.Drawing.Size(72, 28);
+            this.boldfaceCheckBox.TabIndex = 26;
+            this.boldfaceCheckBox.Text = "粗体";
+            this.boldfaceCheckBox.UseVisualStyleBackColor = true;
             // 
             // italicsCheckBox
             // 
@@ -344,15 +358,25 @@
             this.fadCheckBox.UseVisualStyleBackColor = true;
             this.fadCheckBox.CheckedChanged += new System.EventHandler(this.FadCheckBox_CheckedChanged);
             // 
-            // boldfaceCheckBox
+            // underlinedCheckBox
             // 
-            this.boldfaceCheckBox.AutoSize = true;
-            this.boldfaceCheckBox.Location = new System.Drawing.Point(331, 32);
-            this.boldfaceCheckBox.Name = "boldfaceCheckBox";
-            this.boldfaceCheckBox.Size = new System.Drawing.Size(72, 28);
-            this.boldfaceCheckBox.TabIndex = 26;
-            this.boldfaceCheckBox.Text = "粗体";
-            this.boldfaceCheckBox.UseVisualStyleBackColor = true;
+            this.underlinedCheckBox.AutoSize = true;
+            this.underlinedCheckBox.Location = new System.Drawing.Point(409, 32);
+            this.underlinedCheckBox.Name = "underlinedCheckBox";
+            this.underlinedCheckBox.Size = new System.Drawing.Size(90, 28);
+            this.underlinedCheckBox.TabIndex = 27;
+            this.underlinedCheckBox.Text = "下划线";
+            this.underlinedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // strikeoutCheckBox
+            // 
+            this.strikeoutCheckBox.AutoSize = true;
+            this.strikeoutCheckBox.Location = new System.Drawing.Point(505, 32);
+            this.strikeoutCheckBox.Name = "strikeoutCheckBox";
+            this.strikeoutCheckBox.Size = new System.Drawing.Size(90, 28);
+            this.strikeoutCheckBox.TabIndex = 28;
+            this.strikeoutCheckBox.Text = "删除线";
+            this.strikeoutCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -418,5 +442,7 @@
         private CheckBox customCheckBox;
         private CheckBox italicsCheckBox;
         private CheckBox boldfaceCheckBox;
+        private CheckBox underlinedCheckBox;
+        private CheckBox strikeoutCheckBox;
     }
 }

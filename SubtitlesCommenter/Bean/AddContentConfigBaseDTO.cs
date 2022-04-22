@@ -29,6 +29,12 @@ namespace SubtitlesCommenter.Bean
         //粗体
         public int boldface { get; set; } = 0;
 
+        //下划线
+        public int underlined { get; set; } = 0;
+
+        //删除线
+        public int strikeout { get; set; } = 0;
+
         //自定义特效标签
         public string custom { get; set; }
     }

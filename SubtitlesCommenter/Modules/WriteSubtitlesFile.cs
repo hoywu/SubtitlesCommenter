@@ -211,6 +211,14 @@ namespace SubtitlesCommenter.Modules
                 {
                     text.Append("\\b1");
                 }
+                if (v4PDTO.underlined == 1)
+                {
+                    text.Append("\\u1");
+                }
+                if (v4PDTO.strikeout == 1)
+                {
+                    text.Append("\\s1");
+                }
                 if (!string.IsNullOrEmpty(v4PDTO.custom))
                 {
                     text.Append(v4PDTO.custom);
