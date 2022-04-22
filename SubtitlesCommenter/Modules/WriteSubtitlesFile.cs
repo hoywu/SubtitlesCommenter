@@ -207,6 +207,10 @@ namespace SubtitlesCommenter.Modules
                 {
                     text.Append("\\i1");
                 }
+                if (v4PDTO.boldface == 1)
+                {
+                    text.Append("\\b1");
+                }
                 if (!string.IsNullOrEmpty(v4PDTO.custom))
                 {
                     text.Append(v4PDTO.custom);

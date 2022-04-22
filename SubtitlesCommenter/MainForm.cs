@@ -101,6 +101,7 @@ namespace SubtitlesCommenter
                     retObj.fad = fadCheckBox.Checked ? int.Parse(fadMsTextBox.Text) : 0;
                     retObj.alpha = alphaCheckBox.Checked ? int.Parse(alphaTextBox.Text) : 0;
                     retObj.italics = italicsCheckBox.Checked ? 1 : 0;
+                    retObj.boldface = boldfaceCheckBox.Checked ? 1 : 0;
                     retObj.custom = customCheckBox.Checked ? customTextBox.Text : string.Empty;
                 }
                 else

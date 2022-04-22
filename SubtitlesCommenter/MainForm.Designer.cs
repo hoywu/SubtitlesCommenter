@@ -55,6 +55,7 @@
             this.fadMsLabe = new System.Windows.Forms.Label();
             this.fadMsTextBox = new System.Windows.Forms.TextBox();
             this.fadCheckBox = new System.Windows.Forms.CheckBox();
+            this.boldfaceCheckBox = new System.Windows.Forms.CheckBox();
             this.advGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -218,6 +219,7 @@
             // 
             // advGroupBox
             // 
+            this.advGroupBox.Controls.Add(this.boldfaceCheckBox);
             this.advGroupBox.Controls.Add(this.italicsCheckBox);
             this.advGroupBox.Controls.Add(this.label7);
             this.advGroupBox.Controls.Add(this.customTextBox);
@@ -342,6 +344,16 @@
             this.fadCheckBox.UseVisualStyleBackColor = true;
             this.fadCheckBox.CheckedChanged += new System.EventHandler(this.FadCheckBox_CheckedChanged);
             // 
+            // boldfaceCheckBox
+            // 
+            this.boldfaceCheckBox.AutoSize = true;
+            this.boldfaceCheckBox.Location = new System.Drawing.Point(331, 32);
+            this.boldfaceCheckBox.Name = "boldfaceCheckBox";
+            this.boldfaceCheckBox.Size = new System.Drawing.Size(72, 28);
+            this.boldfaceCheckBox.TabIndex = 26;
+            this.boldfaceCheckBox.Text = "粗体";
+            this.boldfaceCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -405,5 +417,6 @@
         private Label label6;
         private CheckBox customCheckBox;
         private CheckBox italicsCheckBox;
+        private CheckBox boldfaceCheckBox;
     }
 }

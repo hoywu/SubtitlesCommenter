@@ -26,6 +26,9 @@ namespace SubtitlesCommenter.Bean
         //斜体
         public int italics { get; set; } = 0;
 
+        //粗体
+        public int boldface { get; set; } = 0;
+
         //自定义特效标签
         public string custom { get; set; }
     }
