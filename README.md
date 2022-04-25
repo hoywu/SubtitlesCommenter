@@ -6,8 +6,6 @@
 
 方便快速添加有固定时间间隔的字幕及应用特效标签
 
-问题反馈、更多需求请发起 [issue](https://github.com/hoywu/SubtitlesCommenter/issues)
-
 ## 目录
 
 - [快速入门](#快速入门)
@@ -23,13 +21,14 @@
 
 ## 下载
 
+ - 2022/04/25  v1.1  [releases](https://github.com/hoywu/SubtitlesCommenter/releases/tag/v1.1)
  - 2022/04/13  v1.0  [releases](https://github.com/hoywu/SubtitlesCommenter/releases/tag/v1.0)
 
 ## TODO List
 
 - [x] 基础功能
-- [ ] 添加更多预置特效选项
-- [ ] 添加滚动效果选项
+- [x] 添加更多预置特效选项
+- [x] 添加滚动效果选项
 - [ ] 国际化
 
 ## Thanks
