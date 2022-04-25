@@ -91,7 +91,7 @@ namespace SubtitlesCommenter.Modules
                                     text.Append("," + v4PDTO.MarginV);
                                     break;
                                 case "Effect":
-                                    text.Append("," + v4PDTO.Effect);
+                                    text.Append("," + AddEffect(v4PDTO));
                                     break;
                                 case "Text":
                                     text.Append("," + AddASSTagsToText(addLine[i], v4PDTO));
@@ -135,7 +135,7 @@ namespace SubtitlesCommenter.Modules
                                 text.Append("," + v4PDTO.MarginV);
                                 break;
                             case "Effect":
-                                text.Append("," + v4PDTO.Effect);
+                                text.Append("," + AddEffect(v4PDTO));
                                 break;
                             case "Text":
                                 text.Append("," + AddASSTagsToText(GetMultiLineText(addLine), v4PDTO));
@@ -177,6 +177,32 @@ namespace SubtitlesCommenter.Modules
             string retString = text.ToString();
             retString = retString.Remove(retString.Length - "\\N".Length);
             return retString + Environment.NewLine;
+        }
+
+        /// <summary>
+        /// Effect效果
+        /// </summary>
+        private static string AddEffect(AddContentConfigBaseDTO baseObj)
+        {
+            // [V4+ Styles]
+            if (baseObj.SubtitlesStyleStandard == StyleStandardEnum.V4P)
+            {
+                AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)baseObj;
+                if (v4PDTO.banner == false) return v4PDTO.Effect;
+
+                StringBuilder text = new("Banner;");
+
+                text.Append(v4PDTO.bannerSpeed + ";");
+                text.Append(v4PDTO.bannerDirection);
+
+                v4PDTO.Effect = text.ToString();
+                return v4PDTO.Effect;
+            }
+            else
+            {
+                // 不应执行到此
+                throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
+            }
         }
 
         /// <summary>

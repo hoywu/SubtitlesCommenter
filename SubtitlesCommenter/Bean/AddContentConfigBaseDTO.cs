@@ -37,5 +37,12 @@ namespace SubtitlesCommenter.Bean
 
         //自定义特效标签
         public string custom { get; set; }
+
+        //横幅效果
+        public bool banner { get; set; } = false;
+        //横幅速度
+        public int bannerSpeed { get; set; }
+        //横幅方向
+        public int bannerDirection { get; set; }
     }
 }

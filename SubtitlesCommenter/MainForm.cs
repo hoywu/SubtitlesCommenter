@@ -111,6 +111,18 @@ namespace SubtitlesCommenter
                     retObj.AdvOption = false;
                 }
 
+                //ºá·ùÐ§¹û
+                if (bannerCheckBox.Checked)
+                {
+                    retObj.banner = true;
+                    retObj.bannerSpeed = int.Parse(bannerSpeedTextBox.Text);
+                    retObj.bannerDirection = bannerDir0RadioButton.Checked ? 0 : 1;
+                }
+                else
+                {
+                    retObj.banner = false;
+                }
+
                 return retObj;
             }
             else
@@ -238,6 +250,21 @@ namespace SubtitlesCommenter
             else
             {
                 customTextBox.Enabled = false;
+            }
+        }
+        private void bannerCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (bannerCheckBox.Checked)
+            {
+                bannerSpeedTextBox.Enabled = true;
+                bannerDir0RadioButton.Enabled = true;
+                bannerDir1RadioButton.Enabled = true;
+            }
+            else
+            {
+                bannerSpeedTextBox.Enabled = false;
+                bannerDir0RadioButton.Enabled = false;
+                bannerDir1RadioButton.Enabled = false;
             }
         }
         #endregion
