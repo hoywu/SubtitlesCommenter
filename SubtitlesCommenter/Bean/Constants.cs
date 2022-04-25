@@ -2,7 +2,7 @@
 {
     internal class Constants
     {
-        public const string VERSION = "v1.0";
+        public const string VERSION = "v1.1";
         //public static readonly string SettingPath = Environment.CurrentDirectory + "\\Setting.json";
         public const string ERROR_MESSAGE_PROGRAMING_ERROR = "程序错误，请联系开发者反馈问题";
     }
