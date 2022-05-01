@@ -65,6 +65,19 @@ namespace SubtitlesCommenter
 
                 try
                 {
+                    //单行模式检查是否有过长的行
+                    if (singleLineRadioButton.Checked)
+                    {
+                        int lineNumber = MainFormUtils.CheckOverLengthLine(contentTextBox.Text, showTimeTextBox.Text);
+                        if (lineNumber != 0)
+                        {
+                            MessageBoxButtons boxButtons = MessageBoxButtons.OKCancel;
+                            DialogResult result = MessageBox.Show(MainFormConstants.NOTICE_MESSAGE_LINETOOLONG + "\n行号：" + lineNumber, "插入字幕", boxButtons);
+                            if (result == DialogResult.Cancel) return;
+                        }
+                    }
+
+                    //执行插入
                     task.WriteContant(BuildAddContentConfig());
                 }
                 catch (Exception ex)

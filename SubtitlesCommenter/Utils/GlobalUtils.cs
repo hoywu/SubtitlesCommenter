@@ -65,5 +65,29 @@
                 throw new Exception("时间格式输入错误" + "\n" + e.Message);
             }
         }
+        /// <summary>
+        /// 将持续时间转换为秒数，格式 0:00:00.00
+        /// </summary>
+        public static int ShowTimeToSec(string ShowTime)
+        {
+            try
+            {
+                string[] show = ShowTime.Split(new char[] { ':', '.' });
+                int s = 0;
+
+                int ms = int.Parse(show[show.Length - 1]);
+                if (ms > 50) s++;
+
+                s += int.Parse(show[show.Length - 2]);
+                s += int.Parse(show[show.Length - 3]) * 60;
+                s += int.Parse(show[show.Length - 4]) * 3600;
+
+                return s;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("时间格式输入错误" + "\n" + e.Message);
+            }
+        }
     }
 }
