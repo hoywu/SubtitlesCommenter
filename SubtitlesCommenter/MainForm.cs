@@ -265,7 +265,7 @@ namespace SubtitlesCommenter
                 customTextBox.Enabled = false;
             }
         }
-        private void bannerCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void BannerCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (bannerCheckBox.Checked)
             {
@@ -278,6 +278,17 @@ namespace SubtitlesCommenter
                 bannerSpeedTextBox.Enabled = false;
                 bannerDir0RadioButton.Enabled = false;
                 bannerDir1RadioButton.Enabled = false;
+            }
+        }
+        private void AutoShowTimeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autoShowTimeCheckBox.Checked)
+            {
+                showTimeTextBox.Enabled = false;
+            }
+            else
+            {
+                showTimeTextBox.Enabled = true;
             }
         }
         #endregion
