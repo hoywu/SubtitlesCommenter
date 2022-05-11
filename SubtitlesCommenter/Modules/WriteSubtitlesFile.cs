@@ -52,93 +52,111 @@ namespace SubtitlesCommenter.Modules
                 // 判断用户输入了多少行
                 string[] addLine = (v4PDTO.Text.Replace("\r\n", "\n") + "\n").Split('\n');
 
+                int layer = v4PDTO.Layer;
+                string startTime = v4PDTO.AddLocation;
+                string endTime;
+                string styleName = v4PDTO.Style.Name;
+                string name = v4PDTO.Name;
+                int MarginL = v4PDTO.MarginL;
+                int MarginR = v4PDTO.MarginR;
+                int MarginV = v4PDTO.MarginV;
+                string effect = AddEffect(v4PDTO);
+                string theText;
+
                 StringBuilder text = new();
 
                 if (v4PDTO.AddMode == AddModeEnum.SINGLE_LINE)
                 {
                     // 单行模式
-                    string startTime = v4PDTO.AddLocation;
                     for (int i = 0; i < addLine.Length; i++)
                     {
                         if ("".Equals(addLine[i])) continue;
                         text.Append("Dialogue: ");
+
+                        theText = AddASSTagsToText(addLine[i], v4PDTO);
+                        endTime = GetEndTime(v4PDTO, startTime, theText);
+
                         foreach (string s in formats)
                         {
                             switch (s)
                             {
                                 case "Layer":
-                                    text.Append("," + v4PDTO.Layer);
+                                    text.Append("," + layer);
                                     break;
                                 case "Start":
                                     text.Append("," + startTime);
                                     break;
                                 case "End":
-                                    text.Append("," + GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime));
+                                    text.Append("," + endTime);
                                     break;
                                 case "Style":
-                                    text.Append("," + v4PDTO.Style.Name);
+                                    text.Append("," + styleName);
                                     break;
                                 case "Name":
-                                    text.Append("," + v4PDTO.Name);
+                                    text.Append("," + name);
                                     break;
                                 case "MarginL":
-                                    text.Append("," + v4PDTO.MarginL);
+                                    text.Append("," + MarginL);
                                     break;
                                 case "MarginR":
-                                    text.Append("," + v4PDTO.MarginR);
+                                    text.Append("," + MarginR);
                                     break;
                                 case "MarginV":
-                                    text.Append("," + v4PDTO.MarginV);
+                                    text.Append("," + MarginV);
                                     break;
                                 case "Effect":
-                                    text.Append("," + AddEffect(v4PDTO));
+                                    text.Append("," + effect);
                                     break;
                                 case "Text":
-                                    text.Append("," + AddASSTagsToText(addLine[i], v4PDTO));
+                                    text.Append("," + theText);
                                     break;
                             }
                         }
                         text.Append(Environment.NewLine);
-                        startTime = GlobalUtils.GetEndTime(startTime, v4PDTO.ShowTime);
+                        startTime = endTime;
                     }
                 }
                 else if (v4PDTO.AddMode == AddModeEnum.MULTI_LINE)
                 {
                     // 整段模式
                     text.Append("Dialogue: ");
+
+                    theText = AddASSTagsToText(GetMultiLineText(addLine), v4PDTO);
+                    endTime = GetEndTime(v4PDTO, v4PDTO.AddLocation, theText);
+
                     foreach (string s in formats)
                     {
                         switch (s)
                         {
                             case "Layer":
-                                text.Append("," + v4PDTO.Layer);
+                                text.Append("," + layer);
                                 break;
                             case "Start":
-                                text.Append("," + v4PDTO.AddLocation);
+                                text.Append("," + startTime);
                                 break;
                             case "End":
-                                text.Append("," + GlobalUtils.GetEndTime(v4PDTO.AddLocation, v4PDTO.ShowTime));
+                                text.Append("," + endTime);
                                 break;
                             case "Style":
-                                text.Append("," + v4PDTO.Style.Name);
+                                text.Append("," + styleName);
                                 break;
                             case "Name":
-                                text.Append("," + v4PDTO.Name);
+                                text.Append("," + name);
                                 break;
                             case "MarginL":
-                                text.Append("," + v4PDTO.MarginL);
+                                text.Append("," + MarginL);
                                 break;
                             case "MarginR":
-                                text.Append("," + v4PDTO.MarginR);
+                                text.Append("," + MarginR);
                                 break;
                             case "MarginV":
-                                text.Append("," + v4PDTO.MarginV);
+                                text.Append("," + MarginV);
                                 break;
                             case "Effect":
-                                text.Append("," + AddEffect(v4PDTO));
+                                text.Append("," + effect);
                                 break;
                             case "Text":
-                                text.Append("," + AddASSTagsToText(GetMultiLineText(addLine), v4PDTO));
+                                text.Append("," + theText);
                                 break;
                         }
                     }
@@ -177,6 +195,37 @@ namespace SubtitlesCommenter.Modules
             string retString = text.ToString();
             retString = retString.Remove(retString.Length - "\\N".Length);
             return retString + Environment.NewLine;
+        }
+
+        /// <summary>
+        /// 获取结束时间，自适应时间为每秒6字、最低1秒
+        /// </summary>
+        /// <param name="baseObj"></param>
+        /// <param name="StartTime">单行模式每次调用需要更新开始时间</param>
+        /// <param name="theText">传入字幕文本用于自适应时间</param>
+        private static string GetEndTime(AddContentConfigBaseDTO baseObj, string StartTime, string theText)
+        {
+            // [V4+ Styles]
+            if (baseObj.SubtitlesStyleStandard == StyleStandardEnum.V4P)
+            {
+                AddContentConfigV4PDTO v4PDTO = (AddContentConfigV4PDTO)baseObj;
+                if (v4PDTO.autoShowTime == false)
+                {
+                    return GlobalUtils.GetEndTime(StartTime, v4PDTO.ShowTime);
+                }
+                string cleanText = new string(theText.Where(c => !char.IsPunctuation(c)).ToArray()).Replace(" ", "").Replace("	", "");
+
+                double showTimeSec = 0;
+                showTimeSec = Math.Round(cleanText.Length / 6.0, 2);
+                if (showTimeSec < 1.0) showTimeSec = 1.0;
+
+                return GlobalUtils.GetEndTime(StartTime, GlobalUtils.SecToShowTime(showTimeSec));
+            }
+            else
+            {
+                // 不应执行到此
+                throw new Exception(Constants.ERROR_MESSAGE_PROGRAMING_ERROR);
+            }
         }
 
         /// <summary>

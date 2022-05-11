@@ -89,5 +89,27 @@
                 throw new Exception("时间格式输入错误" + "\n" + e.Message);
             }
         }
+        /// <summary>
+        /// 将秒数(两位小数)转换为格式 0:00:00.00
+        /// </summary>
+        public static string SecToShowTime(double ShowTimeSec)
+        {
+            int ShowTimeSecInt = (int)ShowTimeSec;
+            int ms = (int)((ShowTimeSec - ShowTimeSecInt) * 100);
+            string msString = ms < 10 ? "0" + ms : ms.ToString();
+
+            int sec = ShowTimeSecInt % 60;
+            int remain = ShowTimeSecInt / 60;
+            string secString = sec < 10 ? "0" + sec : sec.ToString();
+
+            int min = remain % 60;
+            remain = remain / 60;
+            string minString = min < 10 ? "0" + min : min.ToString();
+
+            int hour = remain;
+            string hourString = hour.ToString();
+
+            return hourString + ":" + minString + ":" + secString + "." + msString;
+        }
     }
 }

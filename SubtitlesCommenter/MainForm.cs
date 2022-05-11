@@ -107,6 +107,12 @@ namespace SubtitlesCommenter
                 retObj.Style = task.StyleArray[styleComboBox.SelectedIndex];
                 retObj.Text = contentTextBox.Text;
 
+                //自适应持续时间
+                if (autoShowTimeCheckBox.Checked)
+                {
+                    retObj.autoShowTime = true;
+                }
+
                 // 高级选项
                 if (advCheckBox.Checked)
                 {

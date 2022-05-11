@@ -44,5 +44,8 @@ namespace SubtitlesCommenter.Bean
         public int bannerSpeed { get; set; }
         //横幅方向
         public int bannerDirection { get; set; }
+
+        //自适应持续时间
+        public bool autoShowTime { get; set; } = false;
     }
 }
