@@ -11,7 +11,7 @@
 - [快速入门](#快速入门)
 - [下载](#下载)
 - [TODO List](#todo-list)
-- [Thanks](#thanks)
+- [Dependency](#dependency)
 - [LICENSE](#license-apache-20)
 
 ## 快速入门
@@ -21,8 +21,7 @@
 
 ## 下载
 
- - 2022/04/25  v1.1  [releases](https://github.com/hoywu/SubtitlesCommenter/releases/tag/v1.1)
- - 2022/04/13  v1.0  [releases](https://github.com/hoywu/SubtitlesCommenter/releases/tag/v1.0)
+ - [releases](https://github.com/hoywu/SubtitlesCommenter/releases)
 
 ## TODO List
 
@@ -33,7 +32,7 @@
 - [x] 自适应调整每行持续时间(实验性)
 - [ ] 国际化
 
-## Thanks
+## Dependency
 
 - [UTF-unknown](https://github.com/CharsetDetector/UTF-unknown) - 判断文件编码
 

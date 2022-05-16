@@ -10,7 +10,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <Copyright>Copyright © 2022 hoywu&lt;wu_git@outlook.com&gt;</Copyright>
     <DebugType>none</DebugType>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
