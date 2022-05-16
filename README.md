@@ -16,7 +16,7 @@
 
 ## 快速入门
 
-![Screenshot-1](Assets/Screenshot/p1_v1.0.png)
+![Screenshot-1](Assets/Screenshot/p1_v1.2.png)
 ![Screenshot-2](Assets/Screenshot/p2_v1.0.png)
 
 ## 下载
@@ -30,7 +30,7 @@
 - [x] 预置特效选项
 - [x] 滚动效果选项
 - [x] 单行长度过长提示
-- [ ] 自适应调整每行持续时间
+- [x] 自适应调整每行持续时间(实验性)
 - [ ] 国际化
 
 ## Thanks
